@@ -98,12 +98,70 @@ alternate_sum_4_using_c_alternative:
 
 ; uint32_t alternate_sum_8(uint32_t x1, uint32_t x2, uint32_t x3, uint32_t x4, uint32_t x5, uint32_t x6, uint32_t x7, uint32_t x8);
 ; registros y pila: x1[?], x2[?], x3[?], x4[?], x5[?], x6[?], x7[?], x8[?]
+
+; x1 --> EDI
+; x2 --> ESI
+; x3 --> EDX
+; x4 --> ECX
+; x5 --> R8D
+; x6 --> R9D
+; x7 --> [RBP + 16]
+; x8 --> [RBP + 24]
+
+
 alternate_sum_8:
 	;prologo
+  push RBP
+  mov RBP, RSP
+  push R12
+  push R13
+  push R14
+  push R15
 
-	; COMPLETAR
+  mov R12D, EDX ; x3 -> R12D
+  mov R13D, ECX ; x4 -> R13D
+  mov R14D, R8D ; x5 -> R14D
+  mov R15D, R9D ; x6 -> R15D
+
+  call restar_c ; x1 - x2 -> EAX
+
+  mov EDI, EAX
+  mov ESI, R12D 
+
+  call sumar_c ; (x1 - x2) + x3 -> EAX
+
+  mov EDI, EAX
+  mov ESI, R13D 
+
+  call restar_c ; (x1 - x2 + x3) - x4 -> EAX
+
+  mov EDI, EAX
+  mov ESI, R14D 
+
+  call sumar_c ; (x1 - x2 + x3 - x4) + x5 -> EAX
+
+  mov EDI, EAX
+  mov ESI, R15D 
+
+  call restar_c ; (x1 - x2 + x3 - x4 + x5) - x6 -> EAX
+
+  mov EDI, EAX
+  mov ESI, [RBP + 16] ; le sumo 16 para llegar a x7 
+
+  call sumar_c ; (x1 - x2 + x3 - x4 + x5 - x6) + x7 -> EAX
+
+  mov EDI, EAX
+  mov ESI, [RBP + 24] ; le sumo 24 para llegar a x8
+
+  call restar_c ;  (x1 - x2 + x3 - x4 + x5 - x6 + x7) - x8 -> EAX
 
 	;epilogo
+
+  pop R15
+  pop R14
+  pop R13
+  pop R12
+  pop RBP
 	ret
 
 

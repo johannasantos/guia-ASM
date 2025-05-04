@@ -299,7 +299,7 @@ Si avanzamos hasta la línea 75 ya se habrá guardado el parámetro `x4` en la p
 
 ``` GDB
 >>> p $rcx  //imprime el contenido del registro RCX
->>> p *(uint32_t*)$rbp //castea el contenido de RBP como puntero a uint32_t, lo desferencia e imprime el contenido de la dirección de memoria
+>>> p *(uint32_t*)$rbp //castea el contenido de RBP como puntero a uint32_t, lo desreferencia e imprime el contenido de la dirección de memoria
 ```
 
 Observen que al nombrar registros se precisa añadir un símbolo `$` al comienzo, de lo contrario se interpretaría como un nombre de variable y daría error al no encontrarla.
